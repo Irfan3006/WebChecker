@@ -9,7 +9,7 @@
 ## 🚀 Live Demo
 
 Check out the live version deployed on **Vercel**:  
-[https://webchecker.vercel.app](https://webchecker.vercel.app)
+[https://webcheckerfree.vercel.app/](https://webcheckerfree.vercel.app/)
 
 ---
 
