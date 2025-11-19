@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id" itemscope itemtype="http://schema.org/WebApplication">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO META TAGS  -->
+    <title>WebChecker | Security Header Analyzer Free</title>
+    <meta
+      name="description"
+      content="Tools Cyber Security gratis untuk analisis HTTP Security Headers (HSTS, CSP, X-Frame). Cek keamanan website dan dapatkan skor serta rekomendasi perbaikan instan."
+    />
+    <meta
+      name="keywords"
+      content="WebChecker, Security Header Analyzer, Cek Keamanan Website, HTTP Headers, HSTS, CSP, Pentest Tools, Cyber Security Indonesia, Irfan Syarifudin"
+    />
+    <meta name="author" content="Irfan Syarifudin" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+    <link rel="canonical" href="https://webchecker.vercel.app/" />
+
+    <!-- STRUCTURED DATA (JSON-LD) SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "WebChecker",
+        "url": "https://webchecker.vercel.app/",
+        "description": "Analisis keamanan website secara instan. Cek HTTP Security Headers (HSTS, CSP, X-Frame-Options) dan dapatkan rekomendasi perbaikan.",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "All",
+        "permissions": "internet",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "IDR"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Irfan Syarifudin",
+          "url": "https://irfan-syarifudin.vercel.app/",
+          "jobTitle": "Computer Engineering Student",
+          "affiliation": {
+            "@type": "Organization",
+            "name": "Universitas Amikom Yogyakarta"
+          }
+        },
+        "featureList": "HTTP Header Analysis, Security Scoring, CSP Detection, HSTS Validation",
+        "screenshot": "https://webchecker.vercel.app/static/favicon.svg"
+      }
+    </script>
+
+    <!-- SOCIAL MEDIA CARDS (OG & TWITTER) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://webchecker.vercel.app/" />
+    <meta property="og:title" content="WebChecker | Cek Seberapa Aman Website Kamu!" />
+    <meta property="og:description" content="Tools analisis header keamanan HTTP sederhana. Cek HSTS, CSP, dan risiko keamanan lainnya." />
+    <meta property="og:image" content="{{ url_for('static', filename='favicon.svg') }}" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:site_name" content="WebChecker" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="WebChecker | Security Analyzer" />
+    <meta name="twitter:description" content="Cek header keamanan website kamu dalam hitungan detik. Cek HSTS, CSP, dan risiko keamanan lainnya." />
+    <meta name="twitter:creator" content="@irfan30206" />
+
+    <!-- PERFORMANCE & ASSETS -->
+    <meta name="theme-color" content="#7F3FBF" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml" />
+
+    <!-- External CSS & Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Link ke Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['"Plus Jakarta Sans"', "sans-serif"] },
+            colors: {
+              brand: {
+                DEFAULT: "#7F3FBF",
+                light: "#9F6FD6",
+                dark: "#5A2D8F",
+                50: "#f3e8ff",
+                100: "#e9d5ff",
+                500: "#7F3FBF",
+                600: "#6d35a4",
+                800: "#4c1d95",
+                900: "#3b1c59",
+              },
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+    <!-- Navbar -->
+    <nav class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200 shadow-sm transition-all">
+      <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-2 group">
+          <div class="bg-brand-100 p-2 rounded-lg text-brand-600 group-hover:bg-brand-600 group-hover:text-white transition-colors">
+            <img src="{{ url_for('static', filename='favicon.svg') }}" alt="WebChecker Logo" class="w-5 h-5" />
+          </div>
+          <span class="font-bold text-xl tracking-tight text-slate-800 group-hover:text-brand-600 transition-colors">WebChecker</span>
+        </a>
+
+        <div class="flex items-center gap-4">
+          <div class="hidden md:flex flex-col items-end text-xs">
+            <span class="text-slate-400 font-medium">Developed by</span>
+            <a href="https://irfan-syarifudin.vercel.app/" target="_blank" class="text-brand-600 font-bold hover:underline hover:text-brand-800">
+              Irfan Syarifudin
+            </a>
+          </div>
+          <a
+            href="https://github.com/Irfan3006"
+            target="_blank"
+            aria-label="GitHub Profile"
+            class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-brand-600 hover:text-white transition-all"
+          >
+            <i class="fa-brands fa-github"></i>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative py-16 md:py-24 overflow-hidden bg-brand-900 text-white">
+      <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+      <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+      <div
+        class="absolute bottom-0 left-0 w-72 h-72 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"
+      ></div>
+
+      <div class="container mx-auto px-4 relative z-10 text-center">
+        <span
+          class="inline-block py-1 px-3 rounded-full bg-white/10 border border-white/20 text-xs font-semibold mb-6 backdrop-blur-md text-brand-100"
+        >
+          <i class="fa-solid fa-code-branch mr-1"></i> Cyber Security Project
+        </span>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">Cek Keamanan Website</h1>
+        <p class="text-brand-100 mb-8 max-w-2xl mx-auto text-lg font-light">
+          Analisis HTTP Security Headers (HSTS, CSP, X-Frame) secara instan untuk mengetahui kerentanan keamanan web.
+        </p>
+
+        <div
+          class="max-w-xl mx-auto bg-white p-2 rounded-2xl shadow-2xl shadow-brand-900/50 flex flex-col md:flex-row gap-2 border-4 border-brand-800/30"
+        >
+          <div class="flex-grow relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+              <i class="fa-solid fa-globe"></i>
+            </div>
+            <input
+              type="text"
+              id="urlInput"
+              class="w-full pl-11 pr-4 py-3 rounded-xl bg-transparent outline-none text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-brand-100 transition-all"
+              placeholder="Contoh: google.com"
+              autocomplete="off"
+              aria-label="Masukkan URL Website"
+            />
+          </div>
+          <button
+            onclick="analyzeUrl()"
+            id="analyzeBtn"
+            class="bg-brand hover:bg-brand-600 text-white font-semibold py-3 px-8 rounded-xl transition-all transform active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-brand-500/30"
+          >
+            <span>Analisa</span>
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-10 -mt-8 relative z-20">
+      <!-- Loading Indicator -->
+      <div id="loader" class="hidden text-center py-12 bg-white rounded-2xl shadow-xl border border-slate-100 max-w-3xl mx-auto">
+        <div class="relative w-12 h-12 mx-auto mb-4">
+          <div class="w-12 h-12 border-4 border-brand-100 rounded-full animate-spin border-t-brand-500"></div>
+        </div>
+        <h3 class="text-lg font-semibold text-slate-700">Sedang Memindai Target...</h3>
+        <p class="text-sm text-slate-500 mt-1">Mohon tunggu sebentar</p>
+      </div>
+
+      <!-- Results Area -->
+      <div id="resultsArea" class="hidden space-y-8 fade-in">
+        <!-- Score Card -->
+        <div
+          class="bg-white rounded-3xl shadow-lg border border-slate-100 p-6 md:p-10 flex flex-col md:flex-row items-center gap-8 md:gap-12 relative overflow-hidden"
+        >
+          <div class="absolute top-0 right-0 w-32 h-32 bg-brand-50 rounded-full -mr-16 -mt-16 opacity-50"></div>
+
+          <!-- Chart Lingkaran -->
+          <div class="relative w-40 h-40 flex-shrink-0">
+            <svg class="w-full h-full transform -rotate-90">
+              <circle cx="80" cy="80" r="70" class="stroke-slate-100" stroke-width="12" fill="transparent" />
+              <circle
+                id="scoreCircle"
+                cx="80"
+                cy="80"
+                r="70"
+                class="stroke-brand transition-all duration-1000 ease-out"
+                stroke-width="12"
+                fill="transparent"
+                stroke-dasharray="440"
+                stroke-dashoffset="440"
+                stroke-linecap="round"
+              />
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <span id="scoreValue" class="text-4xl font-bold text-slate-800">0</span>
+              <span class="text-xs uppercase font-semibold text-slate-400 tracking-wider">Score</span>
+            </div>
+          </div>
+
+          <div class="flex-grow text-center md:text-left relative z-10">
+            <h2 class="text-2xl font-bold text-slate-800 mb-2 flex items-center justify-center md:justify-start gap-2">
+              <i class="fa-solid fa-server text-slate-400 text-lg"></i>
+              <span id="targetUrl">domain.com</span>
+            </h2>
+            <div class="flex flex-wrap gap-3 justify-center md:justify-start mb-4">
+              <span id="gradeBadge" class="px-3 py-1 rounded-lg text-sm font-bold bg-gray-100 text-gray-600">PENDING</span>
+            </div>
+            <p class="text-slate-600 text-sm leading-relaxed max-w-xl">
+              Hasil analisis keamanan berdasarkan header HTTP yang terdeteksi pada respons server. Dapat terjadi false positives/negatives dan tidak
+              menggantikan penilaian profesional.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Detail List -->
+          <div class="lg:col-span-2 space-y-4">
+            <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand-600"></i> Detail Header
+            </h3>
+            <div id="headersList" class="space-y-4"></div>
+          </div>
+
+          <!-- Rekomendasi Sidebar -->
+          <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl shadow-md border border-slate-100 overflow-hidden sticky top-24">
+              <div class="bg-slate-50 p-4 border-b border-slate-100">
+                <h3 class="font-bold text-slate-700 flex items-center"><i class="fa-regular fa-lightbulb mr-2 text-yellow-500"></i> Rekomendasi</h3>
+              </div>
+              <ul id="recommendationsList" class="p-5 space-y-4 text-sm text-slate-600"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-auto">
+      <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3 text-sm text-slate-500">
+          <div class="flex items-center gap-2 font-semibold text-slate-700">
+            <div class="bg-brand-100 p-2 rounded-lg text-brand-600 group-hover:bg-brand-600 group-hover:text-white transition-colors">
+              <img src="{{ url_for('static', filename='favicon.svg') }}" alt="WebChecker Logo" class="w-4 h-4" />
+            </div>
+            WebChecker
+          </div>
+          <span class="hidden md:inline text-slate-300">|</span>
+          <span>&copy; 2025 All rights reserved.</span>
+        </div>
+
+        <div class="text-sm text-slate-500 flex items-center gap-1">
+          <span>Created with <i class="fa-solid fa-laptop-code text-brand-500 text-xs mx-0.5"></i> by</span>
+          <a
+            href="https://irfan-syarifudin.vercel.app/"
+            target="_blank"
+            class="font-bold text-slate-700 hover:text-brand-600 hover:underline transition-colors"
+          >
+            Irfan Syarifudin
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- SweetAlert2 Library -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Link ke JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>
