@@ -1,6 +1,7 @@
 import requests
 from flask import Flask, render_template, request, jsonify
 import os
+import traceback
 
 app = Flask(__name__)
 app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'  
@@ -8,6 +9,14 @@ app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True      
 app.config['SESSION_COOKIE_NAME'] = '__Secure-Session'
 app.secret_key = os.environ.get('FLASK_SECRET', 'hello_cracker_change_production')
+
+session = requests.Session()
+
+
+session.headers.update({
+    'User-Agent': 'WebChecker-Security-Scanner/1.0 (Educational Purpose)',
+    'Accept': '*/*'
+})
 
 SECURITY_HEADERS_CONFIG = {
     'Strict-Transport-Security': {
@@ -72,12 +81,7 @@ def analyze():
         url = 'https://' + url
 
     try:
-
-        headers_request = {'User-Agent': 'WebChecker-Security-Scanner/1.0'}
-        
-
-
-        response = requests.get(url, headers=headers_request, timeout=10, verify=True)
+        response = session.get(url, timeout=10, verify=True)
         
         server_headers = response.headers
         results = []
@@ -87,7 +91,6 @@ def analyze():
 
 
         for header_key, config in SECURITY_HEADERS_CONFIG.items():
-
             value = None
             for k in server_headers.keys():
                 if k.lower() == header_key.lower():
@@ -95,7 +98,6 @@ def analyze():
                     break
             
             present = value is not None
-            
 
             if present:
                 score += config['weight']
@@ -129,7 +131,10 @@ def analyze():
     except requests.exceptions.Timeout:
         return jsonify({'error': 'Timeout: Server merespons terlalu lama (lebih dari 10 detik).'}), 400
     except Exception as e:
-        return jsonify({'error': f'System Error: {str(e)}'}), 500
+        print(f"[INTERNAL ERROR] URL: {url} | Error: {str(e)}")
+        traceback.print_exc() 
+        
+        return jsonify({'error': 'Terjadi kesalahan internal pada server saat memproses permintaan. Silakan coba lagi nanti.'}), 500
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
