@@ -54,18 +54,54 @@ async function analyzeUrl() {
         if (!response.ok) {
             throw new Error(data.error || 'Terjadi kesalahan saat analisis.');
         }
+        if (data.waf_suspected) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Firewall Terdeteksi',
+                html: `
+                    <div class="px-2">
+                        <p class="text-slate-500 text-sm mb-4">
+                            Scanner diblokir oleh WAF target. Header disembunyikan.
+                        </p>
+                        
+                        <!-- Info Card -->
+                        <div class="flex items-center justify-between bg-slate-50 border border-slate-100 rounded-xl p-3 mb-2">
+                            <div class="text-center w-1/2 border-r border-slate-200">
+                                <span class="block text-xs text-slate-400 uppercase font-bold">Status</span>
+                                <span class="block text-green-600 font-bold">AKTIF</span>
+                            </div>
+                            <div class="text-center w-1/2">
+                                <span class="block text-xs text-slate-400 uppercase font-bold">Skor</span>
+                                <span class="block text-red-500 font-bold">0</span>
+                            </div>
+                        </div>
+
+                        <div class="text-xs text-red-500 font-medium mt-3 bg-red-50 p-2 rounded-lg border border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-shield-virus"></i>
+                            <span>Header asli tidak terbaca</span>
+                        </div>
+                    </div>
+                `,
+                confirmButtonText: 'Close',
+                confirmButtonColor: '#ef4444',
+                customClass: {
+                    popup: 'rounded-3xl shadow-xl',
+                    confirmButton: 'rounded-xl px-8 py-3 font-bold text-sm shadow-lg shadow-red-500/20',
+                    title: 'text-xl font-bold text-slate-800'
+                }
+            });
+        } else {
+            const Toast = Swal.mixin({
+                toast: true, position: 'top-end', showConfirmButton: false,
+                timer: 3000, timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+            Toast.fire({ icon: 'success', title: 'Analisis Selesai' });
+        }
         renderResults(data);
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true
-        });
-        Toast.fire({
-            icon: 'success',
-            title: 'Analisis Selesai'
-        });
 
     } catch (error) {
         Swal.fire({
@@ -89,7 +125,7 @@ function renderResults(data) {
     const targetUrlEl = document.getElementById('targetUrl');
     const headersList = document.getElementById('headersList');
     const recList = document.getElementById('recommendationsList');
-    
+
     if (targetUrlEl) targetUrlEl.innerText = data.target;
 
     if (headersList) headersList.innerHTML = '';
@@ -97,7 +133,7 @@ function renderResults(data) {
     if (headersList) {
         data.headers_analyzed.forEach(item => {
             const colorClass = item.present ? 'border-green-500' : 'border-red-400';
-            const icon = item.present 
+            const icon = item.present
                 ? '<div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 flex-shrink-0"><i class="fa-solid fa-check"></i></div>'
                 : '<div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-red-500 flex-shrink-0"><i class="fa-solid fa-xmark"></i></div>';
 
@@ -109,10 +145,10 @@ function renderResults(data) {
                             <h4 class="font-bold text-slate-800 text-sm md:text-base">${item.label}</h4>
                             <span class="text-xs font-mono bg-slate-100 px-2 py-1 rounded text-slate-500">${item.header}</span>
                         </div>
-                        ${item.present 
-                            ? `<div class="mt-2 text-xs font-mono bg-slate-50 p-2 rounded text-slate-600 break-all border border-slate-100 overflow-x-auto">${item.value}</div>` 
-                            : `<p class="text-sm text-red-500 mt-1 flex items-start"><i class="fa-solid fa-triangle-exclamation mr-1.5 mt-0.5 flex-shrink-0"></i> ${item.risk_msg}</p>`
-                        }
+                        ${item.present
+                    ? `<div class="mt-2 text-xs font-mono bg-slate-50 p-2 rounded text-slate-600 break-all border border-slate-100 overflow-x-auto">${item.value}</div>`
+                    : `<p class="text-sm text-red-500 mt-1 flex items-start"><i class="fa-solid fa-triangle-exclamation mr-1.5 mt-0.5 flex-shrink-0"></i> ${item.risk_msg}</p>`
+                }
                     </div>
                 </div>
             `;
@@ -133,7 +169,7 @@ function renderResults(data) {
         resultsArea.classList.remove('hidden');
         resultsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    
+
     animateScore(data.score);
 }
 
@@ -141,19 +177,19 @@ function animateScore(score) {
     const circle = document.getElementById('scoreCircle');
     const valueText = document.getElementById('scoreValue');
     const badge = document.getElementById('gradeBadge');
-    
+
     if (!circle || !valueText || !badge) return;
 
-    let color = '#ef4444'; // Merah
+    let color = '#ef4444'; 
     let text = 'HIGH RISK';
     let bg = 'bg-red-100 text-red-700';
 
     if (score >= 80) {
-        color = '#10b981'; // Hijau
+        color = '#10b981';
         text = 'SECURE';
         bg = 'bg-green-100 text-green-700';
     } else if (score >= 50) {
-        color = '#f59e0b'; // Kuning
+        color = '#f59e0b';
         text = 'IMPROVE';
         bg = 'bg-yellow-100 text-yellow-700';
     }
@@ -164,7 +200,7 @@ function animateScore(score) {
 
     let current = 0;
     const stepTime = Math.abs(Math.floor(1000 / (score + 1)));
-    
+
     const timer = setInterval(() => {
         if (current < score) {
             current++;

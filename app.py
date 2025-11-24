@@ -94,7 +94,7 @@ def analyze():
         url = 'https://' + url
 
     try:
-        response = session.get(url, timeout=15, verify=True)
+        response = session.get(url, timeout=20, verify=True)
         
         server_headers = response.headers
         results = []
@@ -130,11 +130,17 @@ def analyze():
 
         final_score = int((score / max_score) * 100)
 
+        waf_suspected = False
+        if response.status_code == 200 and final_score == 0:
+            waf_suspected = True
+            recommendations.insert(0, "⚠️ <strong>Firewall Terdeteksi:</strong> Website aktif tapi header kosong. Kemungkinan Scanner diblokir Firewall.")
+
         return jsonify({
             'target': url,
             'score': final_score,
             'headers_analyzed': results,
-            'recommendations': recommendations
+            'recommendations': recommendations,
+            'waf_suspected': waf_suspected  
         })
 
     except requests.exceptions.SSLError:
@@ -142,7 +148,7 @@ def analyze():
     except requests.exceptions.ConnectionError:
         return jsonify({'error': 'Connection Failed: Website tidak dapat dijangkau atau domain salah.'}), 400
     except requests.exceptions.Timeout:
-        return jsonify({'error': 'Timeout: Server merespons terlalu lama (lebih dari 10 detik).'}), 400
+        return jsonify({'error': 'Timeout: Server merespons terlalu lama (lebih dari 20 detik).'}), 400
     except Exception as e:
         print(f"[INTERNAL ERROR] URL: {url} | Error: {str(e)}")
         traceback.print_exc() 
