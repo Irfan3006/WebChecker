@@ -21,8 +21,11 @@
     <link rel="canonical" href="https://webcheckerfree.vercel.app/" />
 
     <!-- Google AdSense Tag -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6092608473153556"
-     crossorigin="anonymous"></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6092608473153556"
+      crossorigin="anonymous"
+    ></script>
 
     <!-- Google analytics tag-->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-57MHJVK9DP"></script>
@@ -291,7 +294,7 @@
             WebChecker
           </div>
           <span class="hidden md:inline text-slate-300">|</span>
-          <span>&copy; 2025 All rights reserved.</span>
+          <span>&copy; <span id="year"></span> All rights reserved.</span>
         </div>
 
         <div class="text-sm text-slate-500 flex items-center gap-1">
@@ -312,5 +315,9 @@
 
     <!-- Link ke JS -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
   </body>
 </html>
