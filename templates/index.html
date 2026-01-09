@@ -18,7 +18,7 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="google-site-verification" content="29CnmVlPwO8uPHulbQR6KYzol5wqfKfgDzUtH2isZPk" />
 
-    <link rel="canonical" href="https://webcheckerfree.vercel.app/" />
+    <link rel="canonical" href="https://wckf.vercel.app/" />
 
     <!-- Google AdSense Tag -->
     <script
@@ -45,7 +45,7 @@
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "name": "WebChecker",
-        "url": "https://webcheckerfree.vercel.app/",
+        "url": "https://wckf.vercel.app/",
         "description": "Analisis keamanan website secara instan. Cek HTTP Security Headers (HSTS, CSP, X-Frame-Options) dan dapatkan rekomendasi perbaikan.",
         "applicationCategory": "SecurityApplication",
         "operatingSystem": "All",
@@ -66,13 +66,13 @@
           }
         },
         "featureList": "HTTP Header Analysis, Security Scoring, CSP Detection, HSTS Validation",
-        "screenshot": "https://webcheckerfree.vercel.app/static/favicon.svg"
+        "screenshot": "https://wckf.vercel.app/static/favicon.svg"
       }
     </script>
 
     <!-- SOCIAL MEDIA CARDS (OG & TWITTER) -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://webcheckerfree.vercel.app/" />
+    <meta property="og:url" content="https://wckf.vercel.app/" />
     <meta property="og:title" content="WebChecker | Cek Seberapa Aman Website Kamu!" />
     <meta property="og:description" content="Tools analisis header keamanan HTTP sederhana. Cek HSTS, CSP, dan risiko keamanan lainnya." />
     <meta property="og:image" content="{{ url_for('static', filename='favicon.svg') }}" />
@@ -282,7 +282,161 @@
         </div>
       </div>
     </main>
+    <section class="bg-white border-t border-slate-100 py-16 md:py-24 relative z-10">
+      <div class="container mx-auto px-4">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="text-brand-600 font-bold text-sm tracking-wider uppercase mb-2 block">Security Insights</span>
+          <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Parameter Keamanan HTTP</h2>
+          <p class="text-slate-500 leading-relaxed">
+            WebChecker menganalisis header respons server untuk mendeteksi lapisan pertahanan dasar yang sering terabaikan.
+          </p>
+        </div>
 
+        <div class="flex flex-wrap justify-center gap-6 mb-16">
+          <div
+            class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.33%-16px)] xl:w-[calc(25%-18px)] group p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-900/5 transition-all duration-300 flex flex-col"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition-colors"
+            >
+              <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">HSTS</h3>
+            <p class="text-xs text-slate-500 leading-relaxed mb-4 flex-grow">
+              Memaksa browser menggunakan HTTPS terenkripsi. Mencegah serangan <i>Man-in-the-Middle</i> dan <i>Downgrade</i>.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="px-2 py-1 rounded bg-green-50 text-green-700 text-[10px] font-bold uppercase tracking-wide">Enkripsi</span>
+            </div>
+          </div>
+
+          <div
+            class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.33%-16px)] xl:w-[calc(25%-18px)] group p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-900/5 transition-all duration-300 flex flex-col"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition-colors"
+            >
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">CSP</h3>
+            <p class="text-xs text-slate-500 leading-relaxed mb-4 flex-grow">
+              Mengontrol sumber konten (script, gambar, style) yang boleh dimuat. Lapisan utama anti XSS & Injeksi.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="px-2 py-1 rounded bg-blue-50 text-blue-700 text-[10px] font-bold uppercase tracking-wide">Anti-XSS</span>
+            </div>
+          </div>
+
+          <div
+            class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.33%-16px)] xl:w-[calc(25%-18px)] group p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-900/5 transition-all duration-300 flex flex-col"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition-colors"
+            >
+              <i class="fa-regular fa-window-maximize"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">X-Frame-Options</h3>
+            <p class="text-xs text-slate-500 leading-relaxed mb-4 flex-grow">
+              Mencegah website ditampilkan dalam iframe di situs lain. Melindungi user dari serangan <i>Clickjacking</i>.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="px-2 py-1 rounded bg-red-50 text-red-700 text-[10px] font-bold uppercase tracking-wide">Clickjacking</span>
+            </div>
+          </div>
+
+          <div
+            class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.33%-16px)] xl:w-[calc(25%-18px)] group p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-900/5 transition-all duration-300 flex flex-col"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition-colors"
+            >
+              <i class="fa-solid fa-file-shield"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">X-Content-Type</h3>
+            <p class="text-xs text-slate-500 leading-relaxed mb-4 flex-grow">
+              Mencegah browser melakukan "MIME-sniffing" (menebak jenis file). Memastikan file script hanya dijalankan jika tipenya benar.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="px-2 py-1 rounded bg-orange-50 text-orange-700 text-[10px] font-bold uppercase tracking-wide">MIME Sniffing</span>
+            </div>
+          </div>
+
+          <div
+            class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.33%-16px)] xl:w-[calc(25%-18px)] group p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-900/5 transition-all duration-300 flex flex-col"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition-colors"
+            >
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">Referrer-Policy</h3>
+            <p class="text-xs text-slate-500 leading-relaxed mb-4 flex-grow">
+              Mengontrol seberapa banyak informasi referensi (URL asal) yang dikirim saat user mengklik link keluar.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="px-2 py-1 rounded bg-teal-50 text-teal-700 text-[10px] font-bold uppercase tracking-wide">Privacy</span>
+            </div>
+          </div>
+
+          <div
+            class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.33%-16px)] xl:w-[calc(25%-18px)] group p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-900/5 transition-all duration-300 flex flex-col"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition-colors"
+            >
+              <i class="fa-solid fa-microchip"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">Permissions-Policy</h3>
+            <p class="text-xs text-slate-500 leading-relaxed mb-4 flex-grow">
+              Membatasi akses fitur browser canggih (Kamera, Mikrofon, Lokasi, USB) agar tidak disalahgunakan oleh skrip pihak ketiga.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="px-2 py-1 rounded bg-indigo-50 text-indigo-700 text-[10px] font-bold uppercase tracking-wide">Fitur Browser</span>
+            </div>
+          </div>
+
+          <div
+            class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.33%-16px)] xl:w-[calc(25%-18px)] group p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-900/5 transition-all duration-300 flex flex-col"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition-colors"
+            >
+              <i class="fa-solid fa-bug-slash"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">X-XSS-Protection</h3>
+            <p class="text-xs text-slate-500 leading-relaxed mb-4 flex-grow">
+              Header legacy untuk browser lama. Mengaktifkan filter XSS bawaan browser untuk mencegah serangan script sederhana.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="px-2 py-1 rounded bg-slate-100 text-slate-600 text-[10px] font-bold uppercase tracking-wide">Legacy</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-brand-900 rounded-3xl p-8 md:p-12 relative overflow-hidden text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8"
+        >
+          <div class="absolute top-0 right-0 w-64 h-64 bg-brand-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -mr-16 -mt-16"></div>
+
+          <div class="relative z-10 max-w-2xl">
+            <h3 class="text-2xl font-bold text-white mb-3">Mengapa Header Ini Penting?</h3>
+            <p class="text-brand-100 leading-relaxed">
+              Website tanpa HTTP Security Headers memiliki risiko keamanan yang lebih tinggi. Meskipun kontennya aman, ketiadaan header ini dapat
+              dimanfaatkan untuk serangan seperti XSS dan clickjacking, karena browser tidak memiliki pembatasan keamanan yang memadai.
+            </p>
+          </div>
+
+          <div class="relative z-10 flex-shrink-0">
+            <a
+              href="#"
+              class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-brand-900 bg-white hover:bg-brand-50 transition-colors shadow-lg"
+            >
+              Cek Website Sekarang
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 mt-auto">
       <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
