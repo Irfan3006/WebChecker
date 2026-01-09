@@ -56,4 +56,4 @@ Open-source. Feel free to **improve, fork, or modify** as you wish.
 
 ---
 
-© 2025 **Irfan Syarifudin**
+© 2026 **Irfan Syarifudin**
