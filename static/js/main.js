@@ -1,11 +1,11 @@
-const Swal = window.Swal || {
-    fire: (data) => {
-        alert(`${data.title || 'Info'}\n\n${data.text || ''}`);
-    },
-    mixin: () => ({
-        fire: () => console.log('Toast notifikasi (Swal missing)')
-    })
-};
+document.addEventListener('DOMContentLoaded', () => {
+    const urlInput = document.getElementById('urlInput');
+    if (urlInput) {
+        urlInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') analyzeUrl();
+        });
+    }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     const urlInput = document.getElementById('urlInput');
@@ -21,6 +21,12 @@ async function analyzeUrl() {
     const btn = document.getElementById('analyzeBtn');
     const loader = document.getElementById('loader');
     const resultsArea = document.getElementById('resultsArea');
+
+    if (typeof Swal === 'undefined') {
+        alert("Library SweetAlert2 gagal dimuat. Cek koneksi internet Anda.");
+        return;
+    }
+
     if (!urlInput || !btn || !loader || !resultsArea) {
         console.error("Elemen UI kritis tidak ditemukan.");
         return;
@@ -31,12 +37,13 @@ async function analyzeUrl() {
         Swal.fire({
             icon: 'warning',
             title: 'URL Kosong',
-            text: 'Silakan masukkan URL website yang ingin dianalisis (contoh: google.com).',
-            confirmButtonColor: '#7F3FBF',
-            confirmButtonText: 'Siap, Mengerti'
+            text: 'Silakan masukkan URL website yang ingin dianalisis.',
+            confirmButtonColor: '#7F3FBF'
         });
         return;
     }
+
+    // UI State: Loading
     btn.disabled = true;
     btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Memindai...`;
     resultsArea.classList.add('hidden');
@@ -51,11 +58,14 @@ async function analyzeUrl() {
 
         const data = await response.json();
 
+        console.log("WAF Suspected Status:", data.waf_suspected);
+
         if (!response.ok) {
             throw new Error(data.error || 'Terjadi kesalahan saat analisis.');
         }
-        if (data.waf_suspected) {
-            Swal.fire({
+
+        if (data.waf_suspected === true) {
+            await Swal.fire({
                 icon: 'error',
                 title: 'Firewall Terdeteksi',
                 html: `
@@ -63,30 +73,26 @@ async function analyzeUrl() {
                         <p class="text-slate-500 text-sm mb-4">
                             Scanner diblokir oleh WAF target. Header disembunyikan.
                         </p>
-                        
-                        <!-- Info Card -->
                         <div class="flex items-center justify-between bg-slate-50 border border-slate-100 rounded-xl p-3 mb-2">
                             <div class="text-center w-1/2 border-r border-slate-200">
                                 <span class="block text-xs text-slate-400 uppercase font-bold">Status</span>
-                                <span class="block text-green-600 font-bold">AKTIF</span>
+                                <span class="block text-green-600 font-bold">AKTIF (200 OK)</span>
                             </div>
                             <div class="text-center w-1/2">
                                 <span class="block text-xs text-slate-400 uppercase font-bold">Skor</span>
                                 <span class="block text-red-500 font-bold">0</span>
                             </div>
                         </div>
-
                         <div class="text-xs text-red-500 font-medium mt-3 bg-red-50 p-2 rounded-lg border border-red-100 flex items-center justify-center gap-2">
                             <i class="fa-solid fa-shield-virus"></i>
                             <span>Header asli tidak terbaca</span>
                         </div>
                     </div>
                 `,
-                confirmButtonText: 'Close',
+                confirmButtonText: 'Tutup',
                 confirmButtonColor: '#ef4444',
                 customClass: {
                     popup: 'rounded-3xl shadow-xl',
-                    confirmButton: 'rounded-xl px-8 py-3 font-bold text-sm shadow-lg shadow-red-500/20',
                     title: 'text-xl font-bold text-slate-800'
                 }
             });
@@ -101,6 +107,7 @@ async function analyzeUrl() {
             });
             Toast.fire({ icon: 'success', title: 'Analisis Selesai' });
         }
+
         renderResults(data);
 
     } catch (error) {
@@ -108,8 +115,7 @@ async function analyzeUrl() {
             icon: 'error',
             title: 'Analisis Gagal',
             text: error.message,
-            confirmButtonColor: '#7F3FBF',
-            footer: '<span class="text-sm text-slate-500">Pastikan URL benar dan server bisa diakses.</span>'
+            confirmButtonColor: '#7F3FBF'
         });
     } finally {
         if (btn) {
@@ -180,7 +186,7 @@ function animateScore(score) {
 
     if (!circle || !valueText || !badge) return;
 
-    let color = '#ef4444'; 
+    let color = '#ef4444';
     let text = 'HIGH RISK';
     let bg = 'bg-red-100 text-red-700';
 
