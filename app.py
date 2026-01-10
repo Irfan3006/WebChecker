@@ -1,3 +1,4 @@
+from urllib import response
 import requests
 from flask import Flask, render_template, request, jsonify
 import os
@@ -127,20 +128,23 @@ def analyze():
                 'risk_msg': config['risk_msg'] if not present else None
             })
 
-
         final_score = int((score / max_score) * 100)
 
         waf_suspected = False
-        if response.status_code == 200 and final_score == 0:
+        
+        if (response.status_code == 200 or response.status_code == 403) and final_score == 0:
             waf_suspected = True
-            recommendations.insert(0, "⚠️ <strong>Firewall Terdeteksi:</strong> Website aktif tapi header kosong. Kemungkinan Scanner diblokir Firewall.")
+            
+            reason = "Akses Ditolak (403)" if response.status_code == 403 else "Header Disembunyikan"
+            recommendations.insert(0, f"⚠️ <strong>Firewall Terdeteksi:</strong> {reason}. Scanner diblokir.")
 
         return jsonify({
             'target': url,
             'score': final_score,
             'headers_analyzed': results,
             'recommendations': recommendations,
-            'waf_suspected': waf_suspected  
+            'waf_suspected': waf_suspected,
+            'status_code': response.status_code  
         })
 
     except requests.exceptions.SSLError:
@@ -155,6 +159,6 @@ def analyze():
         
         return jsonify({'error': 'Terjadi kesalahan internal pada server saat memproses permintaan. Silakan coba lagi nanti.'}), 500
 
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+# if __name__ == '__main__':
+#     port = int(os.environ.get('PORT', 5000))
+#     app.run(host='0.0.0.0', port=port)

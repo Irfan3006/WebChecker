@@ -73,22 +73,26 @@ async function analyzeUrl() {
                         <p class="text-slate-500 text-sm mb-4">
                             Scanner diblokir oleh WAF target. Header disembunyikan.
                         </p>
+                        
                         <div class="flex items-center justify-between bg-slate-50 border border-slate-100 rounded-xl p-3 mb-2">
                             <div class="text-center w-1/2 border-r border-slate-200">
                                 <span class="block text-xs text-slate-400 uppercase font-bold">Status</span>
-                                <span class="block text-green-600 font-bold">AKTIF (200 OK)</span>
+                                <span class="block ${data.status_code === 200 ? 'text-green-600' : 'text-red-600'} font-bold">
+                                    HTTP ${data.status_code}
+                                </span>
                             </div>
                             <div class="text-center w-1/2">
                                 <span class="block text-xs text-slate-400 uppercase font-bold">Skor</span>
                                 <span class="block text-red-500 font-bold">0</span>
                             </div>
                         </div>
+                        
                         <div class="text-xs text-red-500 font-medium mt-3 bg-red-50 p-2 rounded-lg border border-red-100 flex items-center justify-center gap-2">
                             <i class="fa-solid fa-shield-virus"></i>
                             <span>Header asli tidak terbaca</span>
                         </div>
                     </div>
-                `,
+`,
                 confirmButtonText: 'Tutup',
                 confirmButtonColor: '#ef4444',
                 customClass: {
