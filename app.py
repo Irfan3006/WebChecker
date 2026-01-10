@@ -131,11 +131,19 @@ def analyze():
         final_score = int((score / max_score) * 100)
 
         waf_suspected = False
-        
-        if (response.status_code == 200 or response.status_code == 403) and final_score == 0:
+         
+        blocked_codes = [403, 429] 
+
+        if (response.status_code == 200 or response.status_code in blocked_codes) and final_score == 0:
             waf_suspected = True
             
-            reason = "Akses Ditolak (403)" if response.status_code == 403 else "Header Disembunyikan"
+            if response.status_code == 403:
+                reason = "Akses Ditolak (403)"
+            elif response.status_code == 429:
+                reason = "Akses Ditolak (429)"
+            else:
+                reason = "Header Disembunyikan"
+                
             recommendations.insert(0, f"⚠️ <strong>Firewall Terdeteksi:</strong> {reason}. Scanner diblokir.")
 
         return jsonify({
