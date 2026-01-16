@@ -81,6 +81,10 @@ SECURITY_HEADERS_CONFIG = {
 def home():
     return render_template('index.html')
 
+@app.route('/robots.txt')
+def robots():
+    return app.send_static_file('robots.txt')
+
 @app.route('/analyze', methods=['POST'])
 def analyze():
 
